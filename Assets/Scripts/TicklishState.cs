@@ -24,6 +24,7 @@ public class TicklishState : IState
     public void Enter()
     {
         Debug.Log("happy¡¯¿‘");
+        _pet.transform.LookAt(Camera.main.transform.position);
         _anim.Play(_animHash, -1, 0);
         _currentTime = 0;
     }
@@ -36,6 +37,11 @@ public class TicklishState : IState
         {
             _pet.ChangeState(_pet.States[(int)EPetState.Idle]);
         }
+    }
+
+    public void LateUpdate()
+    {
+
     }
 
     public void Exit()
