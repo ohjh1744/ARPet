@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.ARFoundation;
 
-public class HappyState : IState
+public class EatState : IState
 {
     private PetController _pet;
 
@@ -13,17 +12,17 @@ public class HappyState : IState
 
     private float _currentTime;
 
-    private int _animHash = Animator.StringToHash("Happy");
+    private int _animHash = Animator.StringToHash("Eat");
 
-    public HappyState(PetController pet)
+    public EatState(PetController pet)
     {
         _pet = pet;
         _anim = pet.GetComponent<Animator>();
-        _finishTime = pet.StateFinishTime[(int)EPetState.Happy];
+        _finishTime = pet.StateFinishTime[(int)EPetState.Eat];
     }
     public void Enter()
     {
-        Debug.Log("happy진입");
+        Debug.Log("Eat진입");
         _pet.transform.LookAt(Camera.main.transform.position);
         _anim.Play(_animHash, -1, 0);
         _currentTime = 0;
@@ -33,18 +32,15 @@ public class HappyState : IState
     public void Update()
     {
         _currentTime += Time.deltaTime;
-        if(_currentTime > _finishTime)
+        if (_currentTime > _finishTime)
         {
             _pet.ChangeState(_pet.States[(int)EPetState.Idle]);
         }
     }
 
- 
     public void Exit()
     {
-        Debug.Log("Happy나감");
+        Debug.Log("Eat나감");
         _pet.Player.IsPlayerDo = EPlayer.Idle;
     }
-
-
 }

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
-public enum EPetState {Idle, Move, Ticklish, Happy, Size}
+public enum EPetState {Idle, Eat, Move, Ticklish, Happy, Size}
 public class PetController : MonoBehaviour
 {
     private IState _currentState;
@@ -21,8 +21,11 @@ public class PetController : MonoBehaviour
     [SerializeField] private PetData _petData;
     public PetData PetData { get { return _petData; } private set { } }
 
-    [SerializeField] private Transform _spine;
+    [SerializeField] private PreyDetector _preyDetector;
+    public PreyDetector PreyDector {  get { return _preyDetector; } private set { } }
 
+
+    [SerializeField] private Transform _spine;
     public Transform Spine { get { return _spine; } private set { } }
 
     [SerializeField] private Transform[] _legs;
@@ -38,6 +41,7 @@ public class PetController : MonoBehaviour
     private void Awake()
     {
         States[(int)EPetState.Idle] = new IdleState(this);
+        States[(int)EPetState.Eat] = new EatState(this);
         States[(int)EPetState.Move] = new MoveState(this);
         States[(int)EPetState.Ticklish] = new TicklishState(this);
         States[(int)EPetState.Happy] = new HappyState(this);
@@ -53,12 +57,6 @@ public class PetController : MonoBehaviour
     {
         _currentState.Update();
     }
-
-    private void LateUpdate()
-    {
-        _currentState.LateUpdate();
-    }
-
     public void ChangeState(IState newState)
     {
         if (_currentState != null)

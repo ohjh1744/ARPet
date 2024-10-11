@@ -44,6 +44,11 @@ public class MoveState : IState
 
     }
 
+    public void OnCollision(Collision collision)
+    {
+
+    }
+
     public void Exit()
     {
         Debug.Log("Move³ª°¨");

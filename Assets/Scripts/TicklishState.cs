@@ -39,11 +39,6 @@ public class TicklishState : IState
         }
     }
 
-    public void LateUpdate()
-    {
-
-    }
-
     public void Exit()
     {
         Debug.Log("Happy³ª°¨");
