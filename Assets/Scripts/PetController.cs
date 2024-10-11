@@ -10,15 +10,29 @@ public class PetController : MonoBehaviour
     private IState _currentState;
 
     private IState[] _states = new IState[(int)EPetState.Size];
-
     public IState[] States { get { return _states; } private set { } }
 
-    [SerializeField] private PlayerController _player;
+    private Coroutine _routine;
+    public IEnumerator IEnumerator { get; set; }
 
+    [SerializeField] private PlayerController _player;
     public PlayerController Player { get { return _player; } private set { } }
 
-    [SerializeField] private float[] _stateFinishTime;
+    [SerializeField] private PetData _petData;
+    public PetData PetData { get { return _petData; } private set { } }
 
+    [SerializeField] private Transform _spine;
+
+    public Transform Spine { get { return _spine; } private set { } }
+
+    [SerializeField] private Transform[] _legs;
+
+    public Transform[] Legs { get { return _legs; } private set { } }
+
+    [SerializeField] private float _moveAnimTime;
+    public float MoveAnimTime { get { return _moveAnimTime; } private set { } }
+
+    [SerializeField] private float[] _stateFinishTime;
     public float[] StateFinishTime { get { return _stateFinishTime; } private set { } }
 
     private void Awake()
@@ -40,6 +54,11 @@ public class PetController : MonoBehaviour
         _currentState.Update();
     }
 
+    private void LateUpdate()
+    {
+        _currentState.LateUpdate();
+    }
+
     public void ChangeState(IState newState)
     {
         if (_currentState != null)
@@ -49,5 +68,19 @@ public class PetController : MonoBehaviour
 
         _currentState = newState;
         _currentState.Enter();
+    }
+
+    public void StartRoutine()
+    {
+        _routine = StartCoroutine(IEnumerator);
+    }
+
+    public void StopRoutine()
+    {
+        if(_routine != null)
+        {
+            StopCoroutine(_routine);
+            _routine = null;
+        }
     }
 }

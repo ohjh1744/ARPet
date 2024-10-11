@@ -9,6 +9,8 @@ public class IdleState : IState
     private PlayerController _player;
 
     private Animator _anim;
+
+    private int _animHash = Animator.StringToHash("Idle");
     public IdleState(PetController pet)
     {
         _pet = pet;
@@ -17,7 +19,7 @@ public class IdleState : IState
     }
     public  void Enter()
     {
-
+        _anim.Play(_animHash);
     }
 
     // Update is called once per frame
@@ -31,10 +33,20 @@ public class IdleState : IState
         {
             _pet.ChangeState(_pet.States[(int)EPetState.Ticklish]);
         }
+        else if (_player.IsPlayerDo == EPlayer.MakeMove)
+        {
+            _pet.ChangeState(_pet.States[(int)EPetState.Move]);
+        }
+    }
+
+    public void LateUpdate()
+    {
+
     }
 
     public void Exit()
     {
 
     }
+
 }
