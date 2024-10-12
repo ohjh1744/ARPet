@@ -58,10 +58,10 @@ public class EatState : IState
         _pet.transform.LookAt(Camera.main.transform.position);
         _anim.Play(_animHash, -1, 0);
         _saveData.GameData.HungryGage += _preyDetector.EatAmount;
-        Debug.Log(_saveData.GameData.HungryGage);
         if (_saveData.GameData.HungryGage > _petData.MaxHunGryGage)
         {
             _saveData.GameData.HungryGage = _petData.MaxHunGryGage;
         }
+        Debug.Log(_saveData.GameData.HungryGage);
     }
 }
