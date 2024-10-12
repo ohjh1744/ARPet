@@ -9,6 +9,8 @@ public class PreyDetector : MonoBehaviour
     private bool _isDetectPrey;
     public bool IsDetectPrey { get { return _isDetectPrey; } set { _isDetectPrey = value; } }
 
+    private float _eatAmount;
+    public float EatAmount { get { return _eatAmount; } private set { } }
 
     private Coroutine _coroutine;
 
@@ -26,6 +28,8 @@ public class PreyDetector : MonoBehaviour
         {
             _isDetectPrey = true;
             collision.gameObject.SetActive(false);
+            Prey prey = collision.gameObject.GetComponent<Prey>();
+            _eatAmount = prey.Amount;
             _coroutine = StartCoroutine(SetFalseIsDetect());
         }
     }

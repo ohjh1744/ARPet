@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
-
-
+using UnityEngine.UI;
+using System;
+using System.Data;
 public enum EPetState {Idle, Eat, Move, Ticklish, Happy, Size}
 public class PetController : MonoBehaviour
 {
@@ -38,8 +39,18 @@ public class PetController : MonoBehaviour
     [SerializeField] private float[] _stateFinishTime;
     public float[] StateFinishTime { get { return _stateFinishTime; } private set { } }
 
+    [SerializeField] private Slider _hungrySlider;
+
+    private SaveData _saveData;
+    public  SaveData SaveData { get { return _saveData; } private set { } }
+
+    private float _currentTime;
+
     private void Awake()
     {
+        _saveData = DataManager.Instance.SaveData;
+        DataManager.Instance.ResetHungryGage = PetData.MaxHunGryGage;
+        DataManager.Instance.Load();
         States[(int)EPetState.Idle] = new IdleState(this);
         States[(int)EPetState.Eat] = new EatState(this);
         States[(int)EPetState.Move] = new MoveState(this);
@@ -49,12 +60,33 @@ public class PetController : MonoBehaviour
 
     void Start()
     {
+        UpdateHungryGage();
+        LoadHungryGage();
         ChangeState(States[(int)EPetState.Idle]);
+    }
+
+    private void OnEnable()
+    {
+        _saveData.GameData.OnHungryGageChange += UpdateHungryGage;
+    }
+
+    private void OnDisable()
+    {
+        _saveData.GameData.OnHungryGageChange -= UpdateHungryGage;
     }
 
     // Update is called once per frame
     void Update()
     {
+        _currentTime += Time.deltaTime;
+        if (_currentTime > _petData.DecreaseHungryTime)
+        {
+            if(_saveData.GameData.HungryGage > 0f)
+            {
+                _saveData.GameData.HungryGage -= PetData.DecreaseHungryGage;
+            }
+            _currentTime = 0f;
+        }
         _currentState.Update();
     }
     public void ChangeState(IState newState)
@@ -81,4 +113,20 @@ public class PetController : MonoBehaviour
             _routine = null;
         }
     }
+
+    public void LoadHungryGage()
+    {
+        DateTime quitLastTIme = DateTime.Parse(_saveData.GameData.ExitTime);
+        TimeSpan timeDiff = DateTime.Now - quitLastTIme;
+        double minutes = timeDiff.TotalMinutes;
+        int intMinutes = (int)minutes;
+        _saveData.GameData.HungryGage -= intMinutes;
+
+    }
+    public void UpdateHungryGage()
+    {
+        _hungrySlider.value = _saveData.GameData.HungryGage / PetData.MaxHunGryGage;
+    }
+
+
 }

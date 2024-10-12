@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class Prey : MonoBehaviour
 {
+    [SerializeField] private float _amount;
+    public float Amount { get { return _amount; }  private set { } }
+
     [SerializeField] private float _lifeTime;
+
     [SerializeField] private Rigidbody _rigid;
 
     private float _currentTIme;

@@ -6,6 +6,12 @@ public class EatState : IState
 {
     private PetController _pet;
 
+    private PetData _petData;
+
+    private PreyDetector _preyDetector;
+
+    private SaveData _saveData;
+
     private Animator _anim;
 
     private float _finishTime;
@@ -19,12 +25,15 @@ public class EatState : IState
         _pet = pet;
         _anim = pet.GetComponent<Animator>();
         _finishTime = pet.StateFinishTime[(int)EPetState.Eat];
+        _preyDetector = pet.PreyDector;
+        _saveData = pet.SaveData;
+        _petData = pet.PetData;
+
     }
     public void Enter()
     {
         Debug.Log("Eat진입");
-        _pet.transform.LookAt(Camera.main.transform.position);
-        _anim.Play(_animHash, -1, 0);
+        Eat();
         _currentTime = 0;
     }
 
@@ -42,5 +51,17 @@ public class EatState : IState
     {
         Debug.Log("Eat나감");
         _pet.Player.IsPlayerDo = EPlayer.Idle;
+    }
+
+    private void Eat()
+    {
+        _pet.transform.LookAt(Camera.main.transform.position);
+        _anim.Play(_animHash, -1, 0);
+        _saveData.GameData.HungryGage += _preyDetector.EatAmount;
+        Debug.Log(_saveData.GameData.HungryGage);
+        if (_saveData.GameData.HungryGage > _petData.MaxHunGryGage)
+        {
+            _saveData.GameData.HungryGage = _petData.MaxHunGryGage;
+        }
     }
 }

@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
         Touch touch = Input.GetTouch(0);
         _dragDistance = touch.position - _dragLastPosition;
         _throwSpeed = _dragDistance.magnitude / _setThrowPowerdegree;
-        Debug.Log(_throwSpeed);
         _dragLastPosition = touch.position;
     }
 
