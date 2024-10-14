@@ -15,6 +15,7 @@ public class DataManager : MonoBehaviour
         {
             if(_instance == null)
             {
+                Debug.Log("instance가 null이라 만들어줌");
                 SetupInstance();
             }
 
@@ -37,6 +38,7 @@ public class DataManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Destory");
             Destroy(gameObject);
         }
     }
