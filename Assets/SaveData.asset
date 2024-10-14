@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameData:
     _exitTIme: 2024-10-12T23:39:03.4707845+09:00
-    _hungryGage: 12
+    _hungryGage: 100

@@ -56,12 +56,16 @@ public class PetController : MonoBehaviour
     {
 
     }
-    void Start()
+
+    private void OnEnable()
     {
         _saveData = DataManager.Instance.SaveData;
         DataManager.Instance.ResetHungryGage = PetData.MaxHunGryGage;
         DataManager.Instance.Load();
         _saveData.GameData.OnHungryGageChange += UpdateHungryGage;
+    }
+    void Start()
+    {
         UpdateHungryGage();
         LoadHungryGage();
         States[(int)EPetState.Idle] = new IdleState(this);
