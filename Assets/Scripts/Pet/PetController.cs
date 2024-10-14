@@ -115,7 +115,7 @@ public class PetController : MonoBehaviour
         }
     }
 
-    public void LoadHungryGage()
+    private void LoadHungryGage()
     {
         DateTime quitLastTIme = DateTime.Parse(_saveData.GameData.ExitTime);
         if (quitLastTIme.Minute == DateTime.Now.Minute)
@@ -132,7 +132,7 @@ public class PetController : MonoBehaviour
         }
 
     }
-    public void UpdateHungryGage()
+    private void UpdateHungryGage()
     {
         _hungrySlider.value = _saveData.GameData.HungryGage / PetData.MaxHunGryGage;
         _sb.Clear();

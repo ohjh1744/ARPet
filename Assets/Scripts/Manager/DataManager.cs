@@ -10,19 +10,7 @@ using UnityEngine.SceneManagement;
 public class DataManager : MonoBehaviour
 {
     private static DataManager _instance;
-    public static DataManager Instance
-    {
-        get
-        {
-            if(_instance == null)
-            {
-                Debug.Log("instance∞° null¿Ã∂Û ∏∏µÈæÓ¡‹");
-                SetupInstance();
-            }
-
-            return _instance;
-        }
-    }
+    public static DataManager Instance { get { return _instance; } private set { } }
 
     [SerializeField] private SaveData _saveData;
     public SaveData SaveData { get { return _saveData; } private set { } }
@@ -35,28 +23,11 @@ public class DataManager : MonoBehaviour
     {
         if (_instance == null)
         {
-            SetupInstance();
+            _instance = this;
         }
         else
         {
-            Debug.Log("Destory");
-            if(SceneManager.GetActiveScene().buildIndex != 0)
-            {
-                Destroy(gameObject);
-            }
-        }
-    }
-
-    private static void SetupInstance()
-    {
-        _instance = FindAnyObjectByType<DataManager>();
-        if(_instance != null)
-        {
-            DontDestroyOnLoad(_instance.gameObject);
-        }
-        else
-        {
-            Debug.LogWarning("æ¿ø° ΩÃ±€≈Ê ø¿∫Í¡ß∆Æ x");
+            Destroy(gameObject);
         }
     }
 
