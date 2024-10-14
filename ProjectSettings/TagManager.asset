@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PetHead
   - PetWaist
+  - Prey
   layers:
   - Default
   - TransparentFX
