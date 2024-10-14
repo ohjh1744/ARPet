@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73fbb83883da5a4aba18f2891b8babe, type: 3}
   m_Name: SaveData
   m_EditorClassIdentifier: 
+  _gameData:
+    _exitTIme: 2024-10-12T23:39:03.4707845+09:00
+    _hungryGage: 100

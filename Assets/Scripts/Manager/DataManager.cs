@@ -8,7 +8,20 @@ using System;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager Instance { get; private set; }
+    private static DataManager _instance;
+    public static DataManager Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                Debug.Log("instance∞° null¿Ã∂Û ∏∏µÈæÓ¡‹");
+                SetupInstance();
+            }
+
+            return _instance;
+        }
+    }
 
     [SerializeField] private SaveData _saveData;
     public SaveData SaveData { get { return _saveData; } private set { } }
@@ -19,14 +32,27 @@ public class DataManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            SetupInstance();
         }
         else
         {
+            Debug.Log("Destory");
             Destroy(gameObject);
+        }
+    }
+
+    private static void SetupInstance()
+    {
+        _instance = FindAnyObjectByType<DataManager>();
+        if(_instance != null)
+        {
+            DontDestroyOnLoad(_instance.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("æ¿ø° ΩÃ±€≈Ê ø¿∫Í¡ß∆Æ x");
         }
     }
 
@@ -67,6 +93,7 @@ public class DataManager : MonoBehaviour
         string json = File.ReadAllText(path.ToString());
         SaveData.GameData = JsonUtility.FromJson<GameData>(json);
         Debug.Log("Comoplete");
+        Debug.Log($"{Application.persistentDataPath}");
 
     }
 

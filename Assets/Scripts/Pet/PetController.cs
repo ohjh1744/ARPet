@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Data;
+using System.Text;
+using TMPro;
 public enum EPetState {Idle, Eat, Move, Ticklish, Happy, Size}
 public class PetController : MonoBehaviour
 {
@@ -41,35 +43,37 @@ public class PetController : MonoBehaviour
 
     [SerializeField] private Slider _hungrySlider;
 
+    [SerializeField] private TextMeshProUGUI _hungryText;
+
+    private StringBuilder _sb = new StringBuilder();
+
     private SaveData _saveData;
     public  SaveData SaveData { get { return _saveData; } private set { } }
 
     private float _currentTime;
 
-    private void Awake()
+    void Awake()
     {
         _saveData = DataManager.Instance.SaveData;
         DataManager.Instance.ResetHungryGage = PetData.MaxHunGryGage;
         DataManager.Instance.Load();
-        States[(int)EPetState.Idle] = new IdleState(this);
-        States[(int)EPetState.Eat] = new EatState(this);
-        States[(int)EPetState.Move] = new MoveState(this);
-        States[(int)EPetState.Ticklish] = new TicklishState(this);
-        States[(int)EPetState.Happy] = new HappyState(this);
-    }
-
-    void Start()
-    {
-        UpdateHungryGage();
-        LoadHungryGage();
-        ChangeState(States[(int)EPetState.Idle]);
     }
 
     private void OnEnable()
     {
         _saveData.GameData.OnHungryGageChange += UpdateHungryGage;
     }
-
+    void Start()
+    {
+        UpdateHungryGage();
+        LoadHungryGage();
+        States[(int)EPetState.Idle] = new IdleState(this);
+        States[(int)EPetState.Eat] = new EatState(this);
+        States[(int)EPetState.Move] = new MoveState(this);
+        States[(int)EPetState.Ticklish] = new TicklishState(this);
+        States[(int)EPetState.Happy] = new HappyState(this);
+        ChangeState(States[(int)EPetState.Idle]);
+    }
     private void OnDisable()
     {
         _saveData.GameData.OnHungryGageChange -= UpdateHungryGage;
@@ -118,14 +122,21 @@ public class PetController : MonoBehaviour
     {
         DateTime quitLastTIme = DateTime.Parse(_saveData.GameData.ExitTime);
         TimeSpan timeDiff = DateTime.Now - quitLastTIme;
-        double minutes = timeDiff.TotalMinutes;
+        double minutes = timeDiff.TotalSeconds / _petData.DecreaseHungryTime;
         int intMinutes = (int)minutes;
-        _saveData.GameData.HungryGage -= intMinutes;
+        _saveData.GameData.HungryGage -= intMinutes * _petData.DecreaseHungryGage;
+        if(_saveData.GameData.HungryGage < 0f)
+        {
+            _saveData.GameData.HungryGage = 0f;
+        }
 
     }
     public void UpdateHungryGage()
     {
         _hungrySlider.value = _saveData.GameData.HungryGage / PetData.MaxHunGryGage;
+        _sb.Clear();
+        _sb.Append(_saveData.GameData.HungryGage);
+        _hungryText.SetText(_sb);
     }
 
 
