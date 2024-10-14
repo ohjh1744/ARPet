@@ -52,6 +52,8 @@ public class PetController : MonoBehaviour
 
     private float _currentTime;
 
+    [SerializeField] private Timer _timer;
+
     void Awake()
     {
         _saveData = DataManager.Instance.SaveData;
@@ -82,14 +84,9 @@ public class PetController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _currentTime += Time.deltaTime;
-        if (_currentTime > _petData.DecreaseHungryTime)
+        if(_timer.IsTimeChange == true && _saveData.GameData.HungryGage > 0f)
         {
-            if(_saveData.GameData.HungryGage > 0f)
-            {
-                _saveData.GameData.HungryGage -= PetData.DecreaseHungryGage;
-            }
-            _currentTime = 0f;
+            _saveData.GameData.HungryGage -= PetData.DecreaseHungryGage;
         }
         _currentState.Update();
     }
