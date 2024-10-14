@@ -62,6 +62,5 @@ public class EatState : IState
         {
             _saveData.GameData.HungryGage = _petData.MaxHunGryGage;
         }
-        Debug.Log(_saveData.GameData.HungryGage);
     }
 }

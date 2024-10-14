@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System.IO;
 using System;
+using UnityEngine.SceneManagement;
 
 public class DataManager : MonoBehaviour
 {
@@ -39,7 +40,10 @@ public class DataManager : MonoBehaviour
         else
         {
             Debug.Log("Destory");
-            Destroy(gameObject);
+            if(SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 

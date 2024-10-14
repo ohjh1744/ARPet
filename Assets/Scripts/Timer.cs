@@ -33,11 +33,14 @@ public class Timer : MonoBehaviour
         _lastTime = new StringBuilder();
         _currentTime = new StringBuilder();
         UpdateTime();
+        _lastTime.Clear().Append(_currentTime);
     }
 
     private void Start()
     {
+        _isTimeChange = false;
         _waitTime = _routineDurate;
+        _textTimer.SetText(_currentTime.ToString());
     }
 
     void Update()

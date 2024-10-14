@@ -2254,6 +2254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textTimer: {fileID: 1383029718}
+  _routineDurate: 0.5
 --- !u!1 &919132147654926102 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5eceb2b49d8f2024b84bec7b86aeda61, type: 3}

@@ -67,8 +67,8 @@ public class PetController : MonoBehaviour
     }
     void Start()
     {
-        UpdateHungryGage();
         LoadHungryGage();
+        UpdateHungryGage();
         States[(int)EPetState.Idle] = new IdleState(this);
         States[(int)EPetState.Eat] = new EatState(this);
         States[(int)EPetState.Move] = new MoveState(this);
@@ -118,10 +118,14 @@ public class PetController : MonoBehaviour
     public void LoadHungryGage()
     {
         DateTime quitLastTIme = DateTime.Parse(_saveData.GameData.ExitTime);
+        if (quitLastTIme.Minute == DateTime.Now.Minute)
+        {
+            return;
+        }
         TimeSpan timeDiff = DateTime.Now - quitLastTIme;
         double minutes = timeDiff.TotalSeconds / _petData.DecreaseHungryTime;
-        int intMinutes = (int)minutes;
-        _saveData.GameData.HungryGage -= intMinutes * _petData.DecreaseHungryGage;
+        _saveData.GameData.HungryGage -= (int)minutes * _petData.DecreaseHungryGage;
+
         if(_saveData.GameData.HungryGage < 0f)
         {
             _saveData.GameData.HungryGage = 0f;
@@ -134,6 +138,7 @@ public class PetController : MonoBehaviour
         _sb.Clear();
         _sb.Append(_saveData.GameData.HungryGage);
         _hungryText.SetText(_sb);
+        Debug.Log(_saveData.GameData.HungryGage);
     }
 
 
